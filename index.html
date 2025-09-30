@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-list Verifiche Documentali</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-header {
+            padding: 20px 25px;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-header.certificazioni {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .category-header.organizzazione {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .category-header.vdr {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+        }
+
+        .category-header.sorveglianza {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        .category-header.formazione {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .category-header.appalti {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
+        .category-content {
+            background: #f8f9fa;
+            padding: 25px;
+        }
+
+        .checklist-item {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            gap: 15px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.certificazioni {
+            border-left-color: #e74c3c;
+        }
+
+        .checklist-item.organizzazione {
+            border-left-color: #3498db;
+        }
+
+        .checklist-item.vdr {
+            border-left-color: #f39c12;
+        }
+
+        .checklist-item.sorveglianza {
+            border-left-color: #9b59b6;
+        }
+
+        .checklist-item.formazione {
+            border-left-color: #27ae60;
+        }
+
+        .checklist-item.appalti {
+            border-left-color: #e67e22;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .item-number {
+            background: #34495e;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .item-text {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-option.presente input {
+            accent-color: #27ae60;
+        }
+
+        .checkbox-option.assente input {
+            accent-color: #e74c3c;
+        }
+
+        .checkbox-option label {
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .checkbox-option.presente label {
+            color: #27ae60;
+        }
+
+        .checkbox-option.assente label {
+            color: #e74c3c;
+        }
+
+        .notes-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notes-button:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 60px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 12px;
+            font-family: inherit;
+            resize: vertical;
+            display: none;
+        }
+
+        .notes-textarea.show {
+            display: block;
+        }
+
+        .summary-section {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d5f4e6 100%);
+            border-radius: 12px;
+            border: 2px solid #27ae60;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .form-info {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-info-title {
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .form-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .form-field input {
+            padding: 8px;
+            border: 1px solid #d4a574;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .action-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button.print {
+            background: #3498db;
+            color: white;
+        }
+
+        .action-button.reset {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .action-button.save {
+            background: #27ae60;
+            color: white;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .action-buttons {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checklist-item {
+                grid-template-columns: auto 1fr;
+                gap: 10px;
+            }
+            
+            .checkbox-group {
+                grid-column: 1 / -1;
+                margin-top: 10px;
+            }
+            
+            .notes-button {
+                grid-column: 1 / -1;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CHECK-LIST VERIFICHE DOCUMENTALI</h1>
+            <p>Controllo Documentazione Sicurezza sul Lavoro - D.Lgs 81/08</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-info">
+                <div class="form-info-title">INFORMAZIONI VERIFICA</div>
+                <div class="form-fields">
+                    <div class="form-field">
+                        <label for="azienda">Azienda/Stabilimento:</label>
+                        <input type="text" id="azienda" placeholder="Nome azienda">
+                    </div>
+                    <div class="form-field">
+                        <label for="verificatore">Verificatore:</label>
+                        <input type="text" id="verificatore" placeholder="Nome e cognome">
+                    </div>
+                    <div class="form-field">
+                        <label for="data">Data verifica:</label>
+                        <input type="date" id="data">
+                    </div>
+                    <div class="form-field">
+                        <label for="sede">Sede:</label>
+                        <input type="text" id="sede" placeholder="Ubicazione">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABELLA 1: CERTIFICAZIONI -->
+            <div class="category-section">
+                <div class="category-header certificazioni">
+                    <span>📜</span>
+                    <span>TABELLA 1: LE CERTIFICAZIONI</span>
+                </div>
+                <div class="category-content">
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">1</div>
+                        <div class="item-text">Dichiarazione di conformità dell'impianto elettrico e di terra con verifiche periodiche</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c1_p" name="c1" value="presente">
+                                <label for="c1_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c1_a" name="c1" value="assente">
+                                <label for="c1_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c1')">Note</button>
+                        <textarea class="notes-textarea" id="o9_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+                  <div class="checklist-item certificazioni">
+                        <div class="item-number">2</div>
+                        <div class="item-text">Certificato di prevenzione incendi / SCIA</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c2_p" name="c2" value="presente">
+                                <label for="c2_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c2_a" name="c2" value="assente">
+                                <label for="c2_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c2')">Note</button>
+                        <textarea class="notes-textarea" id="c2_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">3</div>
+                        <div class="item-text">Piano di emergenza della sede</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c3_p" name="c3" value="presente">
+                                <label for="c3_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c3_a" name="c3" value="assente">
+                                <label for="c3_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c3')">Note</button>
+                        <textarea class="notes-textarea" id="c3_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">4</div>
+                        <div class="item-text">Dichiarazione di conformità, denuncia e verifiche ascensori</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c4_p" name="c4" value="presente">
+                                <label for="c4_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c4_a" name="c4" value="assente">
+                                <label for="c4_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c4')">Note</button>
+                        <textarea class="notes-textarea" id="c4_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">5</div>
+                        <div class="item-text">Planimetrie dei locali</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c5_p" name="c5" value="presente">
+                                <label for="c5_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c5_a" name="c5" value="assente">
+                                <label for="c5_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c5')">Note</button>
+                        <textarea class="notes-textarea" id="c5_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">6</div>
+                        <div class="item-text">Libretto e verifiche degli impianti termici</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c6_p" name="c6" value="presente">
+                                <label for="c6_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c6_a" name="c6" value="assente">
+                                <label for="c6_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c6')">Note</button>
+                        <textarea class="notes-textarea" id="c6_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">7</div>
+                        <div class="item-text">Registro infortuni</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c7_p" name="c7" value="presente">
+                                <label for="c7_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c7_a" name="c7" value="assente">
+                                <label for="c7_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c7')">Note</button>
+                        <textarea class="notes-textarea" id="c7_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">8</div>
+                        <div class="item-text">Dichiarazione di conformità CE e/o libretti matricolari macchine e attrezzature</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c8_p" name="c8" value="presente">
+                                <label for="c8_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c8_a" name="c8" value="assente">
+                                <label for="c8_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c8')">Note</button>
+                        <textarea class="notes-textarea" id="c8_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                    <div class="checklist-item certificazioni">
+                        <div class="item-number">9</div>
+                        <div class="item-text">Verbale di verifica di primo impianto e/o periodiche delle attrezzature (All. VII D.Lgs 81/08)</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="c9_p" name="c9" value="presente">
+                                <label for="c9_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="c9_a" name="c9" value="assente">
+                                <label for="c9_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('c9')">Note</button>
+                        <textarea class="notes-textarea" id="c9_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+              <!-- TABELLA 2: ORGANIZZAZIONE -->
+            <div class="category-section">
+                <div class="category-header organizzazione">
+                    <span>🏢</span>
+                    <span>TABELLA 2: DOCUMENTI SULL'ORGANIZZAZIONE</span>
+                </div>
+                <div class="category-content">
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">1</div>
+                        <div class="item-text">Organigramma della Ditta</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o1_p" name="o1" value="presente">
+                                <label for="o1_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o1_a" name="o1" value="assente">
+                                <label for="o1_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o1')">Note</button>
+                        <textarea class="notes-textarea" id="o1_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">2</div>
+                        <div class="item-text">Nomina e titolo professionale del RSPP</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o2_p" name="o2" value="presente">
+                                <label for="o2_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o2_a" name="o2" value="assente">
+                                <label for="o2_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o2')">Note</button>
+                        <textarea class="notes-textarea" id="o2_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">3</div>
+                        <div class="item-text">Nomina del medico competente</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o3_p" name="o3" value="presente">
+                                <label for="o3_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o3_a" name="o3" value="assente">
+                                <label for="o3_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o3')">Note</button>
+                        <textarea class="notes-textarea" id="o3_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">4</div>
+                        <div class="item-text">Nomine degli eventuali dirigenti e preposti</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o4_p" name="o4" value="presente">
+                                <label for="o4_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o4_a" name="o4" value="assente">
+                                <label for="o4_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o4')">Note</button>
+                        <textarea class="notes-textarea" id="o4_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">5</div>
+                        <div class="item-text">Verbale di elezione/nomina del RLS</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o5_p" name="o5" value="presente">
+                                <label for="o5_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o5_a" name="o5" value="assente">
+                                <label for="o5_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o5')">Note</button>
+                        <textarea class="notes-textarea" id="o5_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">6</div>
+                        <div class="item-text">Nomine degli addetti all'antincendio</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o6_p" name="o6" value="presente">
+                                <label for="o6_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o6_a" name="o6" value="assente">
+                                <label for="o6_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o6')">Note</button>
+                        <textarea class="notes-textarea" id="o6_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">7</div>
+                        <div class="item-text">Nomine degli addetti al primo soccorso</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o7_p" name="o7" value="presente">
+                                <label for="o7_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o7_a" name="o7" value="assente">
+                                <label for="o7_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o7')">Note</button>
+                        <textarea class="notes-textarea" id="o7_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">8</div>
+                        <div class="item-text">Mansionario</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o8_p" name="o8" value="presente">
+                                <label for="o8_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o8_a" name="o8" value="assente">
+                                <label for="o8_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o8')">Note</button>
+                        <textarea class="notes-textarea" id="o8_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">9</div>
+                        <div class="item-text">Verbali di riunione periodica del SPP</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o9_p" name="o9" value="presente">
+                                <label for="o9_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o9_a" name="o9" value="assente">
+                                <label for="o9_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o9')">Note</button>
+                        <textarea class="notes-textarea" id="o9_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+
+                    <div class="checklist-item organizzazione">
+                        <div class="item-number">10</div>
+                        <div class="item-text">Verbali di consultazione su nomine, DVR ecc.</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="o10_p" name="o10" value="presente">
+                                <label for="o10_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="o10_a" name="o10" value="assente">
+                                <label for="o10_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('o10')">Note</button>
+                        <textarea class="notes-textarea" id="o10_notes" placeholder="Note su aggiornamento, completezza..."></textarea>
+                    </div>
+                </div>
+            </div>      
+
+            <!-- TABELLA 3: VDR -->
+            <div class="category-section">
+                <div class="category-header vdr">
+                    <span>⚠️</span>
+                    <span>TABELLA 3: DOCUMENTI SULLA VDR</span>
+                </div>
+                <div class="category-content">
+                    <div class="checklist-item vdr">
+                        <div class="item-number">1</div>
+                        <div class="item-text">Documenti di Valutazione del Rischio (DVR)</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v1_p" name="v1" value="presente">
+                                <label for="v1_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v1_a" name="v1" value="assente">
+                                <label for="v1_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v1')">Note</button>
+                        <textarea class="notes-textarea" id="v1_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">2</div>
+                        <div class="item-text">Valutazioni rischio chimico e schede di sicurezza</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v2_p" name="v2" value="presente">
+                                <label for="v2_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v2_a" name="v2" value="assente">
+                                <label for="v2_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v2')">Note</button>
+                        <textarea class="notes-textarea" id="v2_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">3</div>
+                        <div class="item-text">Valutazione amianto e cancerogeni</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v3_p" name="v3" value="presente">
+                                <label for="v3_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v3_a" name="v3" value="assente">
+                                <label for="v3_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v3')">Note</button>
+                        <textarea class="notes-textarea" id="v3_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">4</div>
+                        <div class="item-text">Valutazione rumore e vibrazioni</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v4_p" name="v4" value="presente">
+                                <label for="v4_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v4_a" name="v4" value="assente">
+                                <label for="v4_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v4')">Note</button>
+                        <textarea class="notes-textarea" id="v4_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">5</div>
+                        <div class="item-text">Valutazione movimentazione manuale dei carichi</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v5_p" name="v5" value="presente">
+                                <label for="v5_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v5_a" name="v5" value="assente">
+                                <label for="v5_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v5')">Note</button>
+                        <textarea class="notes-textarea" id="v5_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">6</div>
+                        <div class="item-text">Valutazione CEM e ROA</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v6_p" name="v6" value="presente">
+                                <label for="v6_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v6_a" name="v6" value="assente">
+                                <label for="v6_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v6')">Note</button>
+                        <textarea class="notes-textarea" id="v6_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">7</div>
+                        <div class="item-text">Valutazione rischio biologico</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v7_p" name="v7" value="presente">
+                                <label for="v7_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v7_a" name="v7" value="assente">
+                                <label for="v7_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v7')">Note</button>
+                        <textarea class="notes-textarea" id="v7_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">8</div>
+                        <div class="item-text">ATEX (protezione contro esplosioni)</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v8_p" name="v8" value="presente">
+                                <label for="v8_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v8_a" name="v8" value="assente">
+                                <label for="v8_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v8')">Note</button>
+                        <textarea class="notes-textarea" id="v8_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+
+                    <div class="checklist-item vdr">
+                        <div class="item-number">9</div>
+                        <div class="item-text">Integrazioni e modifiche al DVR</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="v9_p" name="v9" value="presente">
+                                <label for="v9_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="v9_a" name="v9" value="assente">
+                                <label for="v9_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('v9')">Note</button>
+                        <textarea class="notes-textarea" id="v9_notes" placeholder="Verifica aggiornamento, data ultima revisione..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABELLA 4: SORVEGLIANZA SANITARIA E DPI -->
+            <div class="category-section">
+                <div class="category-header sorveglianza">
+                    <span>🏥</span>
+                    <span>TABELLA 4: DOCUMENTI SU SORVEGLIANZA SANITARIA E DPI</span>
+                </div>
+                <div class="category-content">
+                    <div class="checklist-item sorveglianza">
+                        <div class="item-number">1</div>
+                        <div class="item-text">Protocollo sanitario</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="s1_p" name="s1" value="presente">
+                                <label for="s1_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="s1_a" name="s1" value="assente">
+                                <label for="s1_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('s1')">Note</button>
+                        <textarea class="notes-textarea" id="s1_notes" placeholder="Verifica completezza e aggiornamento..."></textarea>
+                    </div>
+
+                    <div class="checklist-item sorveglianza">
+                        <div class="item-number">2</div>
+                        <div class="item-text">Giudizi di idoneità dei lavoratori con eventuali prescrizioni</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="s2_p" name="s2" value="presente">
+                                <label for="s2_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="s2_a" name="s2" value="assente">
+                                <label for="s2_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('s2')">Note</button>
+                        <textarea class="notes-textarea" id="s2_notes" placeholder="Verifica completezza e aggiornamento..."></textarea>
+                    </div>
+
+                    <div class="checklist-item sorveglianza">
+                        <div class="item-number">3</div>
+                        <div class="item-text">Convocazioni a visita</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="s3_p" name="s3" value="presente">
+                                <label for="s3_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="s3_a" name="s3" value="assente">
+                                <label for="s3_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('s3')">Note</button>
+                        <textarea class="notes-textarea" id="s3_notes" placeholder="Verifica completezza e aggiornamento..."></textarea>
+                    </div>
+
+                    <div class="checklist-item sorveglianza">
+                        <div class="item-number">4</div>
+                        <div class="item-text">Schede di consegna dei dispositivi di protezione individuale</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="s4_p" name="s4" value="presente">
+                                <label for="s4_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="s4_a" name="s4" value="assente">
+                                <label for="s4_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('s4')">Note</button>
+                        <textarea class="notes-textarea" id="s4_notes" placeholder="Verifica completezza e aggiornamento..."></textarea>
+                    </div>
+
+                    <div class="checklist-item sorveglianza">
+                        <div class="item-number">5</div>
+                        <div class="item-text">Verbali di restituzione / sostituzione del DPI</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="s5_p" name="s5" value="presente">
+                                <label for="s5_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="s5_a" name="s5" value="assente">
+                                <label for="s5_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('s5')">Note</button>
+                        <textarea class="notes-textarea" id="s5_notes" placeholder="Verifica completezza e aggiornamento..."></textarea>
+                    </div>
+
+                    <div class="checklist-item sorveglianza">
+                        <div class="item-number">6</div>
+                        <div class="item-text">Addestramento per DPI di terza categoria e udito</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="s6_p" name="s6" value="presente">
+                                <label for="s6_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="s6_a" name="s6" value="assente">
+                                <label for="s6_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('s6')">Note</button>
+                        <textarea class="notes-textarea" id="s6_notes" placeholder="Verifica completezza e aggiornamento..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABELLA 5: FORMAZIONE -->
+            <div class="category-section">
+                <div class="category-header formazione">
+                    <span>🎓</span>
+                    <span>TABELLA 5: DOCUMENTI SULLA FORMAZIONE</span>
+                </div>
+                <div class="category-content">
+                    <div class="checklist-item formazione">
+                        <div class="item-number">1</div>
+                        <div class="item-text">Attestati di formazione di tutti i lavoratori ai rischi generali e specifici + aggiornamenti</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f1_p" name="f1" value="presente">
+                                <label for="f1_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f1_a" name="f1" value="assente">
+                                <label for="f1_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f1')">Note</button>
+                        <textarea class="notes-textarea" id="f1_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">2</div>
+                        <div class="item-text">Attestati di formazione del RLS e aggiornamento annuale</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f2_p" name="f2" value="presente">
+                                <label for="f2_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f2_a" name="f2" value="assente">
+                                <label for="f2_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f2')">Note</button>
+                        <textarea class="notes-textarea" id="f2_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">3</div>
+                        <div class="item-text">Attestati di formazione degli addetti all'antincendio</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f3_p" name="f3" value="presente">
+                                <label for="f3_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f3_a" name="f3" value="assente">
+                                <label for="f3_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f3')">Note</button>
+                        <textarea class="notes-textarea" id="f3_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">4</div>
+                        <div class="item-text">Attestati di formazione degli addetti al primo soccorso</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f4_p" name="f4" value="presente">
+                                <label for="f4_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f4_a" name="f4" value="assente">
+                                <label for="f4_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f4')">Note</button>
+                        <textarea class="notes-textarea" id="f4_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">5</div>
+                        <div class="item-text">Formazione dei preposti e aggiornamenti</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f5_p" name="f5" value="presente">
+                                <label for="f5_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f5_a" name="f5" value="assente">
+                                <label for="f5_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f5')">Note</button>
+                        <textarea class="notes-textarea" id="f5_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">6</div>
+                        <div class="item-text">Formazione dei dirigenti e aggiornamenti</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f6_p" name="f6" value="presente">
+                                <label for="f6_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f6_a" name="f6" value="assente">
+                                <label for="f6_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f6')">Note</button>
+                        <textarea class="notes-textarea" id="f6_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">7</div>
+                        <div class="item-text">Coordinatori per la sicurezza in progettazione ed esecuzione</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f7_p" name="f7" value="presente">
+                                <label for="f7_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f7_a" name="f7" value="assente">
+                                <label for="f7_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f7')">Note</button>
+                        <textarea class="notes-textarea" id="f7_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">8</div>
+                        <div class="item-text">Addetti e preposti a lavori su funi</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f8_p" name="f8" value="presente">
+                                <label for="f8_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f8_a" name="f8" value="assente">
+                                <label for="f8_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f8')">Note</button>
+                        <textarea class="notes-textarea" id="f8_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+
+                    <div class="checklist-item formazione">
+                        <div class="item-number">9</div>
+                        <div class="item-text">Formazione specifica sulle macchine (carrelli elevatori, piattaforme, gru, ecc.)</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="f9_p" name="f9" value="presente">
+                                <label for="f9_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="f9_a" name="f9" value="assente">
+                                <label for="f9_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('f9')">Note</button>
+                        <textarea class="notes-textarea" id="f9_notes" placeholder="Verifica scadenze, attestati mancanti..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABELLA 6: APPALTI E SERVIZI -->
+            <div class="category-section">
+                <div class="category-header appalti">
+                    <span>🤝</span>
+                    <span>TABELLA 6: DOCUMENTI SU APPALTI E SERVIZI</span>
+                </div>
+                <div class="category-content">
+                    <div class="checklist-item appalti">
+                        <div class="item-number">1</div>
+                        <div class="item-text">Verifiche di idoneità tecnica</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="a1_p" name="a1" value="presente">
+                                <label for="a1_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="a1_a" name="a1" value="assente">
+                                <label for="a1_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('a1')">Note</button>
+                        <textarea class="notes-textarea" id="a1_notes" placeholder="Verifica documentazione imprese, DURC, polizze..."></textarea>
+                    </div>
+
+                    <div class="checklist-item appalti">
+                        <div class="item-number">2</div>
+                        <div class="item-text">DUVRI – Documenti Unici di Valutazione dei Rischi Interferenziali</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="a2_p" name="a2" value="presente">
+                                <label for="a2_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="a2_a" name="a2" value="assente">
+                                <label for="a2_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('a2')">Note</button>
+                        <textarea class="notes-textarea" id="a2_notes" placeholder="Verifica documentazione imprese, DURC, polizze..."></textarea>
+                    </div>
+
+                    <div class="checklist-item appalti">
+                        <div class="item-number">3</div>
+                        <div class="item-text">POS / PSC – Piani Operativi di Sicurezza / Piani di Sicurezza e Coordinamento</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="a3_p" name="a3" value="presente">
+                                <label for="a3_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="a3_a" name="a3" value="assente">
+                                <label for="a3_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('a3')">Note</button>
+                        <textarea class="notes-textarea" id="a3_notes" placeholder="Verifica documentazione imprese, DURC, polizze..."></textarea>
+                    </div>
+
+                    <div class="checklist-item appalti">
+                        <div class="item-number">4</div>
+                        <div class="item-text">Verbali di coordinamento</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="a4_p" name="a4" value="presente">
+                                <label for="a4_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="a4_a" name="a4" value="assente">
+                                <label for="a4_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('a4')">Note</button>
+                        <textarea class="notes-textarea" id="="notes-textarea" id="c1_notes" placeholder="Note su stato documento, scadenze, anomalie..."></textarea>
+                    </div>
+
+                     <div class="checklist-item appalti">
+                        <div class="item-number">5</div>
+                        <div class="item-text">Verbali di sopralluoghi congiunti</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="a5_p" name="a5" value="presente">
+                                <label for="a5_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="a5_a" name="a5" value="assente">
+                                <label for="a5_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('a5')">Note</button>
+                        <textarea class="notes-textarea" id="a5_notes" placeholder="Verifica sopralluoghi pre-lavori, firme..."></textarea>
+                    </div>
+
+                    <div class="checklist-item appalti">
+                        <div class="item-number">6</div>
+                        <div class="item-text">Eventuali notifiche, segnalazioni e rilievi alle imprese</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option presente">
+                                <input type="checkbox" id="a6_p" name="a6" value="presente">
+                                <label for="a6_p">PRESENTE</label>
+                            </div>
+                            <div class="checkbox-option assente">
+                                <input type="checkbox" id="a6_a" name="a6" value="assente">
+                                <label for="a6_a">ASSENTE</label>
+                            </div>
+                        </div>
+                        <button class="notes-button" onclick="toggleNotes('a6')">Note</button>
+                        <textarea class="notes-textarea" id="a6_notes" placeholder="Comunicazioni non conformità, prescrizioni..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-title">RIEPILOGO VERIFICA DOCUMENTALE</div>
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-items">50</div>
+                        <div class="stat-label">Documenti Totali</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completed-items">0</div>
+                        <div class="stat-label">Verificati</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="ok-items">0</div>
+                        <div class="stat-label">Presenti</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="nok-items">0</div>
+                        <div class="stat-label">Assenti</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="percent-complete">0%</div>
+                        <div class="stat-label">Completamento</div>
+                    </div>
+                </div>
+                
+                <textarea placeholder="Note generali sulla verifica documentale e azioni correttive da intraprendere..." style="width: 100%; height: 80px; margin-top: 15px; padding: 10px; border: 2px solid #27ae60; border-radius: 5px; font-family: inherit;"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-button print" onclick="window.print()">Stampa</button>
+                <button class="action-button reset" onclick="resetForm()">Reset</button>
+                <button class="action-button save" onclick="saveForm()">Salva</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestione checkbox esclusivi
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    const name = this.name;
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(cb => {
+                        if (cb !== this) cb.checked = false;
+                    });
+                }
+                updateStats();
+            });
+        });
+
+        // Mostra/nascondi note
+        function toggleNotes(itemId) {
+            const textarea = document.getElementById(itemId + '_notes');
+            textarea.classList.toggle('show');
+            if (textarea.classList.contains('show')) {
+                textarea.focus();
+            }
+        }
+
+        // Aggiorna statistiche
+        function updateStats() {
+            const totalItems = document.querySelectorAll('.checklist-item').length;
+            const completedItems = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const okItems = document.querySelectorAll('input[value="presente"]:checked').length;
+            const nokItems = document.querySelectorAll('input[value="assente"]:checked').length;
+            const percentComplete = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('completed-items').textContent = completedItems;
+            document.getElementById('ok-items').textContent = okItems;
+            document.getElementById('nok-items').textContent = nokItems;
+            document.getElementById('percent-complete').textContent = percentComplete + '%';
+        }
+
+        // Reset form
+        function resetForm() {
+            if (confirm('Sei sicuro di voler resettare tutto il modulo?')) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+                document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => input.value = '');
+                document.querySelectorAll('.notes-textarea').forEach(ta => ta.classList.remove('show'));
+                updateStats();
+            }
+        }
+
+        // Salva form
+        function saveForm() {
+            const formData = {};
+            
+            // Salva campi info
+            formData.azienda = document.getElementById('azienda').value;
+            formData.verificatore = document.getElementById('verificatore').value;
+            formData.data = document.getElementById('data').value;
+            formData.sede = document.getElementById('sede').value;
+            
+            // Salva checkbox
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                formData[cb.id] = true;
+            });
+            
+            // Salva note
+            document.querySelectorAll('textarea').forEach(ta => {
+                if (ta.value) formData[ta.id] = ta.value;
+            });
+            
+            const dataStr = JSON.stringify(formData);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `checklist_documenti_${formData.azienda || 'verifica'}_${formData.data || new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            alert('Checklist salvata con successo!');
+        }
+
+        // Imposta data corrente all'avvio
+        window.addEventListener('load', function() {
+            if (!document.getElementById('data').value) {
+                document.getElementById('data').value = new Date().toISOString().split('T')[0];
+            }
+        });
+    </script>
+</body>
+</html>
+
+           
